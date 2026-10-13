@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>User - Request - Form</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/img/favicon.png" rel="icon">
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
+
+<link href="/css/style.css" rel="stylesheet">
+<script src="/socket.io/socket.io.js"></script>
+  <script>
+
+    // Example: connect to the server with the userId, if necessary for your use case
+    const userId = "<%= userId %>";
+
+  // Example: connect to the server with the userId as a query parameter
+  const socket = io(`/?userId=${userId}`);
+
+  socket.on("connect", () => {
+    console.log("Connected to server with userId:", userId);
+  });
+
+    socket.on("newOffer", function (data) {
+      console.log("New offer received:", data);
+      const notificationsDiv = document.getElementById("notifications");
+      const notification = document.createElement("p");
+      // Correctly accessing the category and details from the data object
+      notification.textContent = `New offer for your request  '${data.bid}': ${data.comments}`;
+      notificationsDiv.appendChild(notification);
+
+
+      // Increment the notification count
+      const badge = document.getElementById("notificationBadge");
+      let count = parseInt(badge.textContent) || 0;
+      badge.textContent = ++count;
+
+      if (count > 0) {
+        badge.classList.add('show-badge');
+      } else {
+        badge.classList.remove('show-badge');
+      }
+
+    });
+  </script>
+    
+</head>
+
+<body>
+
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/home/helpseeker" class="logo d-flex align-items-center">
+        <img src="/img/logo2.png" alt="" alt="" width="45" height="100">
+        <span class="d-none d-lg-block">Takalot</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number"></span>
+          </a><!-- End Notification Icon -->
+
+          <ul id="notifications" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            
+          
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="/img/profile-img.jpg" alt="Profile" class="rounded-circle"> 
+            <span class="d-none d-md-block dropdown-toggle ps-2"></span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/home/Profile">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout?role=helpseeker">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+
+
+  <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/home/helpseeker">
+          <i class="bi bi-grid"></i>
+          <span>Home Page</span>
+        </a>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link " href="/home/helpseeker/requests">
+          <i class="bi bi-menu-button-wide"></i>
+           <span>Request List</span>
+        </a>
+      </li>
+      <li class="nav-item">
+
+
+
+        <li class="nav-item">
+          <a class="nav-link " href="/home/request">
+            <i class="bi bi-journal-text"></i><span>
+             <span>Add Request</span>
+          </a>
+        </li>
+       
+        <li class="nav-item">
+          <a class="nav-link " href="/home/offers">
+              <i class="bi bi-menu-button-wide"></i>
+              <span>Offers List</span>
+          </a>
+          </li>
+          <li class="nav-item">
+
+
+      <li class="nav-heading">Pages</li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="/home/Profile">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+    </ul>
+
+   
+
+  </aside><!-- End Sidebar-->
+
+
+
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Request Form</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/home/helpseeker">Home</a></li>
+          <li class="breadcrumb-item active">Add Request</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section" style="width: 90%;">
+      <div class="row" style="width: 100%;">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= typeof requestData !== 'undefined' && requestData ? 'Update request' : 'New service request' %></h5>
+
+              <!-- General Form Elements -->
+              <form id="MainForm" action="/home/request" method="POST" enctype="multipart/form-data">
+
+                <% if (typeof requestID !== 'undefined' && requestID !== null) { %>
+                  <input type="hidden" name="req_id" value="<%= requestID %>">
+                <% } %>
+
+
+                <div class="row mb-3">
+                  <div class="form-group">
+                    <label for="image">Upload a Picture:</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    <p id="classificationStatus" class="form-text" role="status"></p>
+                  </div>
+                </div>
+            
+                <div class="row mb-3">
+                  <label for="category">Category:</label>
+                  <select id="category" name="category" data-selected-category="<%= (typeof requestData !== 'undefined' && requestData ? requestData.category : '') || (typeof selectedCategory !== 'undefined' ? selectedCategory : '') %>" required></select>
+                </div>
+            
+                <div class="row mb-3">
+                  <label for="details">Add Details:</label>
+                    <textarea id="details" name="details" placeholder="Enter your details here" required><%= typeof requestData !== 'undefined' && requestData ? requestData.details : '' %></textarea>
+                </div>
+            
+                <div class="row mb-3">
+                    <div class="col-sm-9 offset-sm-3">
+                        <button id="submitRequest" type="submit" class="btn btn-primary"><%= typeof requestData !== 'undefined' && requestData ? 'Save changes' : 'Create request' %></button>
+                    </div>
+                </div>
+            </form><!-- End General Form Elements -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer"></footer>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+  <script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", function(){
+      console.log("Script loaded.");
+    
+      // Event listener for the image input field
+      document.getElementById('image').addEventListener('change', function(event) {
+        console.log(`Image upload triggered`);
+        var file = event.target.files[0];
+        var status = document.getElementById('classificationStatus');
+        if (!file) {
+          return;
+        }
+        status.textContent = 'Classifying image...';
+
+        var formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/api/upload-image', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(async response => {
+            const text = await response.text();
+            if (!response.ok) {
+                throw new Error(text || 'Image upload failed');
+            }
+            return text ? JSON.parse(text) : {};
+        })
+        .then(data => {
+            const categoryLabels = {
+              'pip': 'Pipe services',
+              'power socket': 'Power socket services',
+              'door handlers': 'Door handle repair'
+            };
+            const normalizedCategory = {
+              'handel_door': 'door handlers',
+              'power_socket': 'power socket',
+              'pip': 'pip'
+            }[data.category] || data.category;
+
+            if (!normalizedCategory) {
+              status.textContent = 'Could not identify a category. Please choose one manually.';
+              return;
+            }
+
+            const userConfirmed = confirm(`The system suggests "${categoryLabels[normalizedCategory] || normalizedCategory}". Use this category or choose another?`);
+            var select = document.getElementById('category');
+            select.innerHTML = ''; // Clear existing options before adding new ones
+
+            if (userConfirmed) {
+                var option = document.createElement('option');
+                option.value = normalizedCategory;
+                option.textContent = categoryLabels[normalizedCategory] || normalizedCategory;
+                option.selected = true;
+                select.appendChild(option);
+                status.textContent = `Suggested category: ${normalizedCategory}`;
+            } else {
+                var placeholderOption = document.createElement('option');
+                placeholderOption.value = '';
+                placeholderOption.textContent = 'Please select a category...';
+                select.appendChild(placeholderOption);
+
+                var categories = ["pip", "power socket", "door handlers"];
+                categories.forEach(function(category) {
+                    var option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = categoryLabels[category] || category;
+                    select.appendChild(option);
+                });
+                status.textContent = 'Choose the category that best describes the issue.';
+            }
+        })
+        .catch(error => {
+          console.error('Image classification error:', error);
+          status.textContent = 'Image classification is unavailable. Choose a category manually.';
+        });
+      });
+    });
+  </script>
+    
+
+
+
+  <!-- Vendor JS Files -->
+  <script src="/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/chart.js/chart.umd.js"></script>
+  <script src="/vendor/echarts/echarts.min.js"></script>
+  <script src="/vendor/quill/quill.min.js"></script>
+  <script src="/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/vendor/php-email-form/validate.js"></script>
+<script>
+  var jsonData = {
+      "categories": ["pip", "power socket", "door handlers"]
+  };
+    var categoryLabels = {
+      "pip": "Pipe services",
+      "power socket": "Power socket services",
+      "door handlers": "Door handle repair"
+    };
+  function populateCategories() {
+      var select = document.getElementById("category");
+      var placeholder = document.createElement("option");
+      placeholder.textContent = "Choose a category";
+      placeholder.value = "";
+      placeholder.disabled = true;
+        placeholder.selected = !select.dataset.selectedCategory;
+      select.appendChild(placeholder);
+      jsonData.categories.forEach(function(category) {
+          var option = document.createElement("option");
+          option.textContent = categoryLabels[category] || category;
+          option.value = category;
+          option.selected = category === select.dataset.selectedCategory;
+          select.appendChild(option);
+      });
+  }
+  populateCategories();
+</script>
+  <!-- Template Main JS File -->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Technician Registration - Takalot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <main class="container">
+      <section
+        class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+      >
+        <div class="auth-card tech-auth-card card">
+          <div class="card-body">
+            <a class="auth-brand" href="/login"
+              >Takalot <span>Technician Network</span></a
+            >
+            <p class="auth-eyebrow">Join the service network</p>
+            <h1>Create a technician account</h1>
+            <p class="auth-intro">
+              Build your profile so help seekers can find your expertise.
+            </p>
+            <form action="/signup/technical" method="post" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="fullName">Full name</label
+                ><input
+                  class="form-control"
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="userName">Username</label
+                ><input
+                  class="form-control"
+                  type="text"
+                  id="userName"
+                  name="userName"
+                  autocomplete="username"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="password">Password</label
+                ><input
+                  class="form-control"
+                  type="password"
+                  id="password"
+                  name="password"
+                  autocomplete="new-password"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="email">Email</label
+                ><input
+                  class="form-control"
+                  type="email"
+                  id="email"
+                  name="email"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="phoneNumber">Phone number</label
+                ><input
+                  class="form-control"
+                  type="tel"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  autocomplete="tel"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="address"
+                  >City or service area</label
+                ><input
+                  class="form-control"
+                  type="text"
+                  id="address"
+                  name="address"
+                  autocomplete="address-level2"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="yearsOfExperience"
+                  >Years of experience</label
+                ><input
+                  class="form-control"
+                  type="number"
+                  id="yearsOfExperience"
+                  name="yearsOfExperience"
+                  min="0"
+                  step="1"
+                  required
+                />
+              </div>
+              <fieldset class="col-12 category-fieldset">
+                <legend class="form-label">Services you provide</legend>
+                <div class="category-options">
+                  <label class="category-option"
+                    ><input type="checkbox" name="category" value="pip" /><span
+                      >Pipe services</span
+                    ></label
+                  >
+                  <label class="category-option"
+                    ><input
+                      type="checkbox"
+                      name="category"
+                      value="power socket"
+                    /><span>Power socket services</span></label
+                  >
+                  <label class="category-option"
+                    ><input
+                      type="checkbox"
+                      name="category"
+                      value="door handlers"
+                    /><span>Door handle repair</span></label
+                  >
+                </div>
+                <p
+                  id="categoryError"
+                  class="form-text text-danger"
+                  role="alert"
+                ></p>
+              </fieldset>
+              <div class="col-12">
+                <label class="form-label" for="qualifications"
+                  >Qualifications and experience</label
+                ><textarea
+                  class="form-control"
+                  id="qualifications"
+                  name="qualifications"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <input type="hidden" name="ratingAverage" value="0" />
+              <div class="col-12">
+                <button class="btn btn-primary w-100" type="submit">
+                  Create technician account
+                </button>
+              </div>
+              <div class="col-12">
+                <p class="small mb-0">
+                  Already registered? <a href="/login">Sign in</a>
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      const technicianSignupForm = document.querySelector(
+        'form[action="/signup/technical"]',
+      );
+      const categoryInputs = [
+        ...technicianSignupForm.querySelectorAll('input[name="category"]'),
+      ];
+      const categoryError = document.getElementById("categoryError");
+
+      technicianSignupForm.addEventListener("submit", (event) => {
+        const hasCategory = categoryInputs.some((input) => input.checked);
+        categoryError.textContent = hasCategory
+          ? ""
+          : "Select at least one service.";
+        if (!hasCategory) {
+          event.preventDefault();
+          categoryInputs[0].focus();
+        }
+      });
+
+      categoryInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          if (categoryInputs.some((choice) => choice.checked))
+            categoryError.textContent = "";
+        });
+      });
+    </script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

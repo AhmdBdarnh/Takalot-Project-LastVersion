@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Techniacal - offers</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/img/favicon.png" rel="icon">
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
+
+<link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/home/technical" class="logo d-flex align-items-center">
+        <img src="/img/logo2.png" alt="" alt="" width="45" height="100">
+        <span class="d-none d-lg-block">Takalot</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number"></span>
+          </a><!-- End Notification Icon -->
+
+          <ul id="notifications" class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            
+          
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="/img/messages-3.jpg" alt="Profile" class="rounded-circle"> 
+            <span class="d-none d-md-block dropdown-toggle ps-2"></span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout?role=technical">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+
+
+
+
+  <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/home/technical">
+          <i class="bi bi-grid"></i>
+          <span>Home Page</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link " href="/techhome/request">
+          <i class="bi bi-grid"></i>
+          <span>Request</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link " href="/tech/offers">
+          <i class="bi bi-grid"></i>
+          <span>Offers</span>
+        </a>
+      </li>
+
+  </aside><!-- End Sidebar-->
+
+<!-- main -->
+<main class="main" id="main">
+<div class="pagetitle">
+    <h1>Offers</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home/technical">Home</a></li>
+            <li class="breadcrumb-item active">Offers</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+
+<div class="container mt-4">
+    <div class="row">
+        <% offers.forEach(offer => { %>
+              <% const offerRequestID = offer.requestID.toString(); %>
+              <% const offer_id = offer._id.toString(); %>
+              <% const request = requestUser.find(request => request._id.toString() === offerRequestID); %>
+            <% if (request) { %>
+                <!-- Display request details -->
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-4">
+                  <div class="card">
+                        <% if (request.image && request.image.image && request.image.contentType) { %>
+                          <img class="request-image" src="data:<%= request.image.contentType %>;base64,<%= request.image.image.toString('base64') %>" alt="Uploaded issue">
+                        <% } else { %>
+                          <div class="request-image image-placeholder"><i class="bi bi-image" aria-hidden="true"></i><span>No photo attached</span></div>
+                        <% } %>
+                        <div class="card-body">
+                            <% const helpseeker = helpseekers.find(helpseeker => helpseeker && helpseeker.id === request.helpseekerId); %>
+                            <h5 class="card-title">Homeowner: <%= helpseeker ? helpseeker.fullName : 'Help seeker' %></h5>
+                            <p class="card-text">Bid: <%= offer.bid %></p>
+                            <p class="card-text">Status: <%= offer.status %></p>
+                            <div class="button-group">
+
+                            <button class="btn btn-primary mr-2" type="button" data-bs-toggle="modal" data-bs-target="#updateOfferModal-<%= offer_id %>">Update</button>
+                            <form action="/deleteOffer" method="post">
+                              <input type="hidden" name="offerID" value="<%= offer_id %>" />
+                              <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                           </div>
+
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="updateOfferModal-<%= offer_id %>" tabindex="-1" aria-labelledby="updateOfferModalLabel-<%= offer_id %>" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="updateOfferModalLabel-<%= offer_id %>">Update Offer</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <!-- Form -->
+              <form id="updateOfferForm-<%= offer_id %>" action="/tech/updateOffer" method="post">
+              <% const offerId = offer._id.toString(); %>
+
+                  <input type="hidden" name="offerID" value="<%= offerId %>">
+
+                  <div class="mb-3">
+                      <label for="updateBid" class="form-label">Bid</label>
+                      <input type="number" class="form-control" id="updateBid-<%= offer_id %>" name="bid" min="1" step="0.01" value="<%= offer.bid %>" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="updateComments" class="form-label">Comments</label>
+                      <textarea class="form-control" id="updateComments-<%= offer_id %>" name="comments" rows="3" placeholder="Enter details of your offer"><%= offer.comments || '' %></textarea>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Update Offer</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+        <% }) %>
+    </div>
+</div>
+
+
+
+
+</main>
+<!-- END main -->
+  <style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        border: none;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .card img {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        object-fit: cover;
+        height: 200px;
+    }
+    .card .card-body {
+        padding: 20px;
+    }
+    .card-title {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .card-text {
+        color: #6c757d;
+    }
+    .btn {
+        border-radius: 5px;
+    }
+</style>
+
+  <!-- Bootstrap JS and dependencies (jQuery, Popper.js) -->
+  <!-- Vendor JS Files -->
+  <script src="/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/chart.js/chart.umd.js"></script>
+  <script src="/vendor/echarts/echarts.min.js"></script>
+  <script src="/vendor/quill/quill.min.js"></script>
+  <script src="/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/vendor/php-email-form/validate.js"></script>
+
+  <script src="/js/main.js"></script>
+
+</body>
+ 
+
+</html>
