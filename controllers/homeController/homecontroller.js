@@ -5,9 +5,7 @@ const { NotFoundError, BadRequsetError } = require('../../errors/err');
 
 const getHomePage = async (req, res) => {
     try {
-        // const userId = req.session.userId || null;
-        const latestImage = null;
-        res.render('index', { latestImage }); // Pass userId to the view template
+        return res.redirect('/login');
       } catch (err) {
         return res.status(err?.status || 500).json({ message: err.message });
       }
